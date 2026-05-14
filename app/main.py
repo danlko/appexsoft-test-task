@@ -3,7 +3,7 @@ import os
 
 from storage import MemoryStorage
 from sdk import HunterClient
-from service import EmailVerifierService, DomainSearchService
+from service import ReportService, EmailVerifierService, DomainSearchService
 
 def main():
     load_dotenv()
@@ -15,6 +15,8 @@ def main():
     email_service = EmailVerifierService(api_client=client, storage=storage)
     domain_service = DomainSearchService(api_client=client, storage=storage)
 
+    reporter = ReportService(storage=storage)
+
     emails_to_test = [
         "patrick@stripe.com",
     ]
@@ -24,21 +26,12 @@ def main():
     ]
 
     for email in emails_to_test:
-        email_service.process_and_save_email(email)
+        email_service.process_and_save(email)
 
     for domain in domain_to_test:
-        domain_service.process_and_save_domain(domain)
+        domain_service.process_and_save(domain)
 
-    all_saved_data = storage.read_all()
-
-    for key, data in all_saved_data.items():
-        if "@" in key:
-            status = data.get("status", "unknown")
-            score = data.get("score", 0)
-            print(f"Email: {key} \nstatus: {status} \nscore: {score}")
-        else:
-            organization = data.get("organization", "unknown")
-            print(f"\nDomain: {key} \norganization: {organization}")
+    reporter.print_summary()
 
 if __name__ == "__main__":
     main()

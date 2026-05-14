@@ -12,7 +12,7 @@ def test_process_and_save_email_success():
     storage = MemoryStorage()
     service = EmailVerifierService(api_client=mock_client, storage=storage)
 
-    result = service.process_and_save_email("ceo@startup.com")
+    result = service.process_and_save("ceo@startup.com")
 
     assert result is True
 
@@ -29,7 +29,7 @@ def test_process_and_save_email_api_error():
     storage = MemoryStorage()
     service = EmailVerifierService(api_client=mock_client, storage=storage)
 
-    result = service.process_and_save_email("fail@startup.com")
+    result = service.process_and_save("fail@startup.com")
 
     assert result is False
 

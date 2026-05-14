@@ -4,6 +4,7 @@ class MemoryStorage:
 
     def create(self, key, value):
         self._data[key] = value
+        return True
 
     def read(self, key):
         return self._data.get(key)
