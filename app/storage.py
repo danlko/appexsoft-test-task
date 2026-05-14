@@ -6,7 +6,7 @@ class MemoryStorage:
         self._data[key] = value
 
     def read(self, key):
-        self._data.get(key)
+        return self._data.get(key)
 
     def update(self, key, value):
         if key in self._data:
